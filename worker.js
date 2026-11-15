@@ -70,12 +70,23 @@ export default {
 
       const result = await response.json();
 
-      if (!response.ok) {
-        return Response.json(
-          { error: "AI service error" },
-          { status: 502, headers }
-        );
-      }
+     if (!response.ok) {
+  const errorText = result.error?.message || "Unknown OpenAI error";
+
+  console.error("OpenAI API error:", {
+    status: response.status,
+    message: errorText
+  });
+
+  return Response.json(
+    {
+      error: "AI service error",
+      status: response.status,
+      details: errorText
+    },
+    { status: 502, headers }
+  );
+}
 
       const answer = result.output
         ?.flatMap(item => item.content || [])
