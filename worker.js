@@ -17,12 +17,13 @@ export default {
       return new Response(null, { headers });
     }
 
-    if (request.method === "GET") {
-      return Response.json({
-        status: "online",
-        name: "JARVIS 2.0 Backend"
-      }, { headers });
-    }
+   if (request.method === "GET") {
+  return Response.json({
+    status: "online",
+    name: "JARVIS 2.0 Backend",
+    apiKeyConfigured: Boolean(env.OPENAI_API_KEY)
+  }, { headers });
+}
 
     if (request.method !== "POST") {
       return Response.json(
