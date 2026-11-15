@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080d18">
+
+<title>JARVIS 2.0</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  background: #080d18;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+h1 {
+  color: #39d9ff;
+  letter-spacing: 3px;
+}
+
+.status {
+  color: #37e99a;
+  font-size: 12px;
+}
+
+.card {
+  background: #111c2d;
+  border: 1px solid #1d3851;
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 16px;
+}
+
+.orb {
+  width: 105px;
+  height: 105px;
+  margin: 15px auto;
+  border-radius: 50%;
+  background: radial-gradient(circle, #5ceaff, #0874b9, #101b30);
+  box-shadow: 0 0 35px #00bfff77;
+}
+
+.center {
+  text-align: center;
+}
+
+button {
+  background: #087eae;
+  color: white;
+  border: none;
+  padding: 13px;
+  border-radius: 10px;
+  font-size: 14px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.tile {
+  background: #142238;
+  border: 1px solid #23415e;
+  border-radius: 14px;
+  padding: 18px 10px;
+  text-align: center;
+}
+
+.tile span {
+  font-size: 25px;
+}
+
+.tile p {
+  font-size: 13px;
+  color: #b5c9dc;
+}
+
+.activity {
+  color: #a9c5d9;
+  font-size: 13px;
+  line-height: 2;
+}
+
+footer {
+  text-align: center;
+  color: #607b91;
+  font-size: 11px;
+  margin: 25px 0;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>JARVIS</h1>
+  <div class="status">● SYSTEM ONLINE</div>
+</header>
+
+<div class="card center">
+  <div class="orb"></div>
+  <h2>Добро пожаловать</h2>
+  <p id="message">Я готов к работе.</p>
+  <button onclick="speak()">🎙 Голосовой режим</button>
+</div>
+
+<div class="card">
+  <h3>⚡ LIVE ACTIVITY</h3>
+  <div class="activity" id="activity">
+    • CONTROL CENTER запущен<br>
+    • Ожидание подключения модулей<br>
+    • Система готова
+  </div>
+</div>
+
+<h3>МОИ МОДУЛИ</h3>
+
+<div class="grid">
+
+  <div class="tile" onclick="openModule('MARKET')">
+    <span>📊</span>
+    <p>MARKET</p>
+  </div>
+
+  <div class="tile" onclick="openModule('BUSINESS AI')">
+    <span>💼</span>
+    <p>BUSINESS AI</p>
+  </div>
+
+  <div class="tile" onclick="openModule('RESEARCH')">
+    <span>🔬</span>
+    <p>RESEARCH</p>
+  </div>
+
+  <div class="tile" onclick="openModule('SKILL CENTER')">
+    <span>🧠</span>
+    <p>SKILL CENTER</p>
+  </div>
+
+  <div class="tile" onclick="openModule('WORKSPACE')">
+    <span>📁</span>
+    <p>WORKSPACE</p>
+  </div>
+
+  <div class="tile" onclick="openModule('MEDIA STUDIO')">
+    <span>🎬</span>
+    <p>MEDIA STUDIO</p>
+  </div>
+
+  <div class="tile" onclick="openModule('MULTI AGENT')">
+    <span>🤖</span>
+    <p>MULTI AGENT</p>
+  </div>
+
+  <div class="tile" onclick="openModule('SECURITY')">
+    <span>🔐</span>
+    <p>SECURITY</p>
+  </div>
+
+</div>
+
+<div class="card">
+  <h3>⚙️ SYSTEM</h3>
+  <p class="activity">
+    Version: JARVIS 2.0<br>
+    Interface: iPhone<br>
+    Backend: Not connected<br>
+    AI Brain: Not connected
+  </p>
+</div>
+
+<footer>
+  JARVIS 2.0 · PERSONAL AI SYSTEM
+</footer>
+
+<script>
+function openModule(name) {
+  document.getElementById("message").innerText =
+    name + " — модуль выбран. Подключение впереди.";
+
+  document.getElementById("activity").innerHTML =
+    "• Выбран модуль " + name +
+    "<br>• Ожидание подключения";
+}
+
+function speak() {
+  if (!("speechSynthesis" in window)) {
+    alert("Голосовой движок пока недоступен.");
+    return;
+  }
+
+  const speech = new SpeechSynthesisUtterance(
+    "Здравствуйте. Я Джарвис. Система готова к работе."
+  );
+
+  speech.lang = "ru-RU";
+  speechSynthesis.speak(speech);
+}
+</script>
+
+</body>
+</html>
