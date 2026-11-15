@@ -331,8 +331,14 @@ async function sendToJarvis() {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.error || "Ошибка сервера");
-    }
+  throw new Error(
+    [
+      data.error,
+      data.status,
+      data.details
+    ].filter(Boolean).join(" | ") || "Ошибка сервера"
+  );
+}
 
     addMessage(data.answer, "ai");
 
