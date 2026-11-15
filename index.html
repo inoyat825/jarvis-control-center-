@@ -214,6 +214,142 @@ function speak() {
   speechSynthesis.speak(speech);
 }
 </script>
+<style>
+#jarvis-chat {
+  margin: 20px 12px;
+  padding: 18px;
+  border: 1px solid #263b55;
+  border-radius: 18px;
+  background: #101a29;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+#jarvis-chat h2 {
+  color: #54d9ff;
+  margin-top: 0;
+}
+#jarvis-messages {
+  height: 260px;
+  overflow-y: auto;
+  padding: 10px;
+  background: #080f19;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+.jarvis-message {
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 10px;
+  overflow-wrap: anywhere;
+}
+.jarvis-user {
+  background: #183b58;
+}
+.jarvis-ai {
+  background: #203044;
+}
+#jarvis-input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #38516d;
+  background: #0b1420;
+  color: white;
+  font-size: 16px;
+}
+#jarvis-send {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  border: 0;
+  border-radius: 10px;
+  background: #087fae;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+#jarvis-send:disabled {
+  opacity: .5;
+}
+</style>
 
+<section id="jarvis-chat">
+  <h2>🤖 JARVIS AI BRAIN</h2>
+
+  <div id="jarvis-messages">
+    <div class="jarvis-message jarvis-ai">
+      Здравствуйте! Я JARVIS. Чем могу помочь?
+    </div>
+  </div>
+
+  <input
+    id="jarvis-input"
+    type="text"
+    placeholder="Напишите сообщение..."
+  >
+
+  <button id="jarvis-send" onclick="sendToJarvis()">
+    Отправить
+  </button>
+</section>
+
+<script>
+const JARVIS_API =
+  "https://jarvis-brain.inoyatv.workers.dev/";
+
+const messages = document.getElementById("jarvis-messages");
+const input = document.getElementById("jarvis-input");
+const sendButton = document.getElementById("jarvis-send");
+
+function addMessage(text, type) {
+  const div = document.createElement("div");
+  div.className = "jarvis-message jarvis-" + type;
+  div.textContent = text;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+async function sendToJarvis() {
+  const message = input.value.trim();
+  if (!message) return;
+
+  addMessage(message, "user");
+  input.value = "";
+  sendButton.disabled = true;
+  sendButton.textContent = "JARVIS думает...";
+
+  try {
+    const response = await fetch(JARVIS_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Ошибка сервера");
+    }
+
+    addMessage(data.answer, "ai");
+
+  } catch (error) {
+    addMessage(
+      "Не удалось подключиться: " + error.message,
+      "ai"
+    );
+  } finally {
+    sendButton.disabled = false;
+    sendButton.textContent = "Отправить";
+  }
+}
+
+input.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") sendToJarvis();
+});
+</script>
 </body>
 </html>
