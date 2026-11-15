@@ -1,4 +1,4 @@
-const ALLOWED_ORIGIN = "https://inoyat825.github.io";
+ const ALLOWED_ORIGIN = "https://inoyat825.github.io";
 
 export default {
   async fetch(request, env) {
